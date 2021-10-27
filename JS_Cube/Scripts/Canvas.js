@@ -1,7 +1,7 @@
 var width;
 var height;
 var ctx;
-var size = 100;
+var size = 200;
 
 var points = [[0, 0],
               [1, 1],
@@ -13,7 +13,7 @@ var points = [[0, 0],
               [7, 7]];
 
 var rot = { //Rotation values in degrees
-    X: 0,
+    X: 90,
     Y: 0,
     Z: 0,
 };
@@ -48,8 +48,8 @@ function setPoints()
     let dy = Math.sin(degToRad(rot.Y));
     for(let i = 0; i < 4; i++)
     {
-        points[i][0] = points[i][0] + dX/2;
-        points[i][1] = points[i][1] + dy/2;
+        // points[i][0] = points[i][0] + dX/2;
+        // points[i][1] = points[i][1] + dy/2;
         points[i+4][0] = points[i][0] + dX/2;
         points[i+4][1] = points[i][1] + dy/2;
     }
@@ -111,7 +111,7 @@ function mainAnimationLoop()
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1;
+    rot.Y += 1.1;
     rot.Y = normaliseAngle(rot.Y);
 
     rot.Z += 1;
