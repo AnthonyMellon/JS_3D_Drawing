@@ -1,22 +1,29 @@
 var width;
 var height;
 var ctx;
-var size = 200;
-
-var points = [[0, 0],
-              [1, 1],
-              [2, 2],
-              [3, 3],
-              [4, 4],
-              [5, 5],
-              [6, 6],
-              [7, 7]];
 
 var rot = { //Rotation values in degrees
     X: 90,
     Y: 0,
     Z: 0,
 };
+
+var square = {
+    size: 100,
+    position: {
+        x: 100,
+        y: 100
+    },
+    points: points = [[0, 0],
+                      [1, 1],
+                      [2, 2],
+                      [3, 3],
+                      [4, 4],
+                      [5, 5],
+                      [6, 6],
+                      [7, 7]],
+
+}
 
 function setupCanvas() {
     const canvas = document.querySelector('.myCanvas');
@@ -58,21 +65,22 @@ function clearScreen(fillStyle)
 
 function setPoints()
 {
-    points[0] = [0, 0];
-    points[1] = [1, 0];
-    points[2] = [1, 1];
-    points[3] = [0, 1]
-
+    //Set front points to how they would be in a normal square
+    square.points[0] = [square.position.x - square.size/2, square.position.y - square.size/2];
+    square.points[1] = [square.position.x + square.size/2, square.position.y - square.size/2];
+    square.points[2] = [square.position.x + square.size/2, square.position.y + square.size/2];
+    square.points[3] = [square.position.x - square.size/2, square.position.y + square.size/2];
 
     //Z axis rotation
     for(let i = 0; i < 4; i++)
-    {
-        //console.log(i);        
-        let newX = (Math.cos(rot.Z)*(points[i][0])) - (Math.sin(rot.Z)*(points[i][1]));
-        let newY = (Math.cos(rot.Z)*(points[i][0])) + (Math.sin(rot.Z)*(points[i][1]));
-
-        points[i][0] = newX;
-        points[i][1] = newY
+    {         
+        let newX = (Math.cos(degToRad(rot.Z))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.Z))*(square.points[i][1]-square.size));
+        let newY = (Math.sin(degToRad(rot.Z))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.Z))*(square.points[i][1]-square.size));
+       
+        square.points[i][0] = newX;
+        square.points[i][1] = newY;
+        square.points[i+4][0] = newX;
+        square.points[i+4][1] = newY;
     }
 
     //X axis rotation
@@ -84,16 +92,11 @@ function setPoints()
     //Update points
     for(let i = 0; i < 4; i++)
     {
-        points[i][0] = points[i][0] + dX/2;
-        points[i][1] = points[i][1] + dy/2;
-        points[i+4][0] = points[i][0] + dX/2;
-        points[i+4][1] = points[i][1] + dy/2;
+        square.points[i][0] = square.points[i][0] + dX/2;
+        square.points[i][1] = square.points[i][1] + dy/2;
+        square.points[i+4][0] = square.points[i+4][0] + dX/2;
+        square.points[i+4][1] = square.points[i+4][1] + dy/2;
     }
-
-    points.forEach(point => {
-        point[0] *= size;
-        point[1] *= size;
-    });
 }
 
 function draw()
@@ -108,10 +111,10 @@ function draw()
 
     //Draw back square       
     ctx.beginPath();
-    ctx.moveTo(points[4][0] + offsetX, points[4][1] + offsetY);
+    ctx.moveTo(square.points[4][0] + offsetX, square.points[4][1] + offsetY);
     for(var i = 1; i < 5; i++)
     {
-        ctx.lineTo(points[(i%4)+4][0] + offsetX, points[(i%4)+4][1] + offsetY);
+        ctx.lineTo(square.points[(i%4)+4][0] + offsetX, square.points[(i%4)+4][1] + offsetY);
     }
     ctx.strokeStyle = 'red';
     ctx.stroke();
@@ -122,18 +125,19 @@ function draw()
     ctx.strokeStyle = 'white';        
     for(var i = 0; i < 4; i++)
     {
-        ctx.beginPath();
-        ctx.moveTo(points[i][0] + offsetX, points[i][1] + offsetY);
-        ctx.lineTo(points[i+4][0] + offsetX, points[i+4][1] + offsetY);
+        ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
+        ctx.beginPath();        
+        ctx.moveTo(square.points[i][0] + offsetX, square.points[i][1] + offsetY);
+        ctx.lineTo(square.points[i+4][0] + offsetX, square.points[i+4][1] + offsetY);
         ctx.stroke();
     }
 
     //Draw front square
     ctx.beginPath();   
-    ctx.moveTo(points[0][0] + offsetX, points[0][1] + offsetY);
+    ctx.moveTo(square.points[0][0] + offsetX, square.points[0][1] + offsetY);
     for(var i = 1; i < 5; i++)
     {
-        ctx.lineTo(points[i%4][0] + offsetX, points[i%4][1] + offsetY);
+        ctx.lineTo(square.points[i%4][0] + offsetX, square.points[i%4][1] + offsetY);
     }
     ctx.strokeStyle = 'white';
     ctx.stroke();
@@ -151,10 +155,10 @@ function mainAnimationLoop()
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1.1;
+    rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 0.01;
+    rot.Z += 1;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
@@ -170,5 +174,6 @@ function main()
     ctx = setupCanvas();
     clearScreen('black');
     mainAnimationLoop();
+    
 }
 main();
