@@ -11,8 +11,8 @@ var rot = { //Rotation values in degrees
 var square = {
     size: 100,
     position: {
-        x: 100,
-        y: 100
+        x: 500,
+        y: 500
     },
     points: points = [[0, 0],
                       [1, 1],
@@ -65,46 +65,64 @@ function clearScreen(fillStyle)
 
 function setPoints()
 {
-    //Set front points to how they would be in a normal square
+    //Set front points to how they would be in a normal square PUT THIS IN A LOOP >:( )    
     square.points[0] = [square.position.x - square.size/2, square.position.y - square.size/2];
     square.points[1] = [square.position.x + square.size/2, square.position.y - square.size/2];
     square.points[2] = [square.position.x + square.size/2, square.position.y + square.size/2];
     square.points[3] = [square.position.x - square.size/2, square.position.y + square.size/2];
+    square.points[4] = [square.position.x - square.size/2, square.position.y - square.size/2];
+    square.points[5] = [square.position.x + square.size/2, square.position.y - square.size/2];
+    square.points[6] = [square.position.x + square.size/2, square.position.y + square.size/2];
+    square.points[7] = [square.position.x - square.size/2, square.position.y + square.size/2];
 
     //Z axis rotation
-    for(let i = 0; i < 4; i++)
+    for(let i = 0; i < 8; i++)
     {         
-        let newX = (Math.cos(degToRad(rot.Z))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.Z))*(square.points[i][1]-square.size));
-        let newY = (Math.sin(degToRad(rot.Z))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.Z))*(square.points[i][1]-square.size));
-       
-        square.points[i][0] = newX;
-        square.points[i][1] = newY;
-        square.points[i+4][0] = newX;
-        square.points[i+4][1] = newY;
+        square.points[i][0] -= square.position.x;
+        square.points[i][1] -= square.position.y;
+        square.points[i] = rotatePoint(square.points[i], degToRad(rot.Z));
+        square.points[i][0] += square.position.x;
+        square.points[i][1] += square.position.y;
     }
 
     //X axis rotation
-    let dX = Math.cos(degToRad(rot.X));
+    //let dX = Math.cos(degToRad(rot.X));
+    // for(let i = 0; i < 8; i++)
+    // {
+    //     let newX = (Math.cos(degToRad(rot.X))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.X))*(square.points[i][1]-square.size));
+    //     let newY = (Math.sin(degToRad(rot.X))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.X))*(square.points[i][1]-square.size));
+       
+    //     square.points[i][0] = newX;
+    //     square.points[i][1] = newY;
+    // }
 
     //Y axis rotation
-    let dy = Math.sin(degToRad(rot.Y)); 
+    //let dy = Math.sin(degToRad(rot.Y)); 
+    // for(let i = 0; i < 8; i++)
+    // {
+    //     let newX = (Math.cos(degToRad(rot.Y))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.Y))*(square.points[i][1]-square.size));
+    //     let newY = (Math.sin(degToRad(rot.Y))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.Y))*(square.points[i][1]-square.size));
+       
+    //     square.points[i][0] = newX;
+    //     square.points[i][1] = newY;
+    // }
     
     //Update points
-    for(let i = 0; i < 4; i++)
-    {
-        square.points[i][0] = square.points[i][0] + dX/2;
-        square.points[i][1] = square.points[i][1] + dy/2;
-        square.points[i+4][0] = square.points[i+4][0] + dX/2;
-        square.points[i+4][1] = square.points[i+4][1] + dy/2;
-    }
+    // for(let i = 0; i < 4; i++)
+    // {
+    //     square.points[i][0] = square.points[i][0] + dX/2;
+    //     square.points[i][1] = square.points[i][1] + dy/2;
+    //     square.points[i+4][0] = square.points[i+4][0] + dX/2;
+    //     square.points[i+4][1] = square.points[i+4][1] + dy/2;
+    // }
 }
 
 function draw()
 {   
     ctx.fillStyle = 'white';
 
-    let offsetX = 250;
-    let offsetY = 250;
+    let offsetX = 0;
+    let offsetY = 0;
 
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'white';
@@ -152,10 +170,10 @@ function mainAnimationLoop()
     clearScreen('black');
 
     //Rotation
-    rot.X += 1;
+    rot.X += 0;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1;
+    rot.Y += 0;
     rot.Y = normaliseAngle(rot.Y);
 
     rot.Z += 1;
