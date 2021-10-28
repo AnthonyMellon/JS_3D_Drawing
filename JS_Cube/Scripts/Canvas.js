@@ -11,8 +11,8 @@ var rot = { //Rotation values in degrees
 var square = {
     size: 100,
     position: {
-        x: 500,
-        y: 500
+        X: 500,
+        Y: 500
     },
     points: points = [[0, 0],
                       [1, 1],
@@ -24,6 +24,8 @@ var square = {
                       [7, 7]],
 
 }
+
+
 
 function setupCanvas() {
     const canvas = document.querySelector('.myCanvas');
@@ -66,65 +68,57 @@ function clearScreen(fillStyle)
 function setPoints()
 {
     //Set front points to how they would be in a normal square PUT THIS IN A LOOP >:( )    
-    square.points[0] = [square.position.x - square.size/2, square.position.y - square.size/2];
-    square.points[1] = [square.position.x + square.size/2, square.position.y - square.size/2];
-    square.points[2] = [square.position.x + square.size/2, square.position.y + square.size/2];
-    square.points[3] = [square.position.x - square.size/2, square.position.y + square.size/2];
-    square.points[4] = [square.position.x - square.size/2, square.position.y - square.size/2];
-    square.points[5] = [square.position.x + square.size/2, square.position.y - square.size/2];
-    square.points[6] = [square.position.x + square.size/2, square.position.y + square.size/2];
-    square.points[7] = [square.position.x - square.size/2, square.position.y + square.size/2];
+    square.points[0] = [square.position.X - square.size/2, square.position.Y - square.size/2];
+    square.points[1] = [square.position.X + square.size/2, square.position.Y - square.size/2];
+    square.points[2] = [square.position.X + square.size/2, square.position.Y + square.size/2];
+    square.points[3] = [square.position.X - square.size/2, square.position.Y + square.size/2];
+    square.points[4] = [square.position.X - square.size/2, square.position.Y - square.size/2];
+    square.points[5] = [square.position.X + square.size/2, square.position.Y - square.size/2];
+    square.points[6] = [square.position.X + square.size/2, square.position.Y + square.size/2];
+    square.points[7] = [square.position.X - square.size/2, square.position.Y + square.size/2];
 
     //Z axis rotation
     for(let i = 0; i < 8; i++)
     {         
-        square.points[i][0] -= square.position.x;
-        square.points[i][1] -= square.position.y;
+        square.points[i][0] -= square.position.X;
+        square.points[i][1] -= square.position.Y;
         square.points[i] = rotatePoint(square.points[i], degToRad(rot.Z));
-        square.points[i][0] += square.position.x;
-        square.points[i][1] += square.position.y;
+        square.points[i][0] += square.position.X;
+        square.points[i][1] += square.position.Y;
     }
 
     //X axis rotation
-    //let dX = Math.cos(degToRad(rot.X));
-    // for(let i = 0; i < 8; i++)
-    // {
-    //     let newX = (Math.cos(degToRad(rot.X))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.X))*(square.points[i][1]-square.size));
-    //     let newY = (Math.sin(degToRad(rot.X))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.X))*(square.points[i][1]-square.size));
-       
-    //     square.points[i][0] = newX;
-    //     square.points[i][1] = newY;
-    // }
 
     //Y axis rotation
-    //let dy = Math.sin(degToRad(rot.Y)); 
-    // for(let i = 0; i < 8; i++)
-    // {
-    //     let newX = (Math.cos(degToRad(rot.Y))*(square.points[i][0]-square.size)) - (Math.sin(degToRad(rot.Y))*(square.points[i][1]-square.size));
-    //     let newY = (Math.sin(degToRad(rot.Y))*(square.points[i][0]-square.size)) + (Math.cos(degToRad(rot.Y))*(square.points[i][1]-square.size));
-       
-    //     square.points[i][0] = newX;
-    //     square.points[i][1] = newY;
-    // }
+    for(let i = 0; i < 4; i++)
+    {
+        let newFront = 0;
+        let newBack = 0;
+
+        let myFrontPoint = 0;
+        let myBackPoint = 0;
+
+        myFrontPoint = square.points[i][0] - square.position.X;
+        myBackPoint = square.points[i+4][0] - square.position.X;
+
+        newFront = (myFrontPoint) * Math.sin(degToRad(rot.Y));
+        newBack = (myBackPoint) * Math.cos(degToRad(rot.Y));
+
+        square.points[i][0] = newFront + square.position.X;
+        square.points[i+4][0] = newBack + square.position.X;
+    }
+
     
-    //Update points
-    // for(let i = 0; i < 4; i++)
-    // {
-    //     square.points[i][0] = square.points[i][0] + dX/2;
-    //     square.points[i][1] = square.points[i][1] + dy/2;
-    //     square.points[i+4][0] = square.points[i+4][0] + dX/2;
-    //     square.points[i+4][1] = square.points[i+4][1] + dy/2;
-    // }
 }
 
 function draw()
 {   
-    ctx.fillStyle = 'white';
+    let wireframe = false;
 
     let offsetX = 0;
     let offsetY = 0;
 
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 1;
     ctx.strokeStyle = 'white';
 
     //Draw back square       
@@ -134,16 +128,18 @@ function draw()
     {
         ctx.lineTo(square.points[(i%4)+4][0] + offsetX, square.points[(i%4)+4][1] + offsetY);
     }
-    ctx.strokeStyle = 'red';
     ctx.stroke();
-    ctx.fillStyle = 'brown';
-    ctx.fill();
+    if(!wireframe)
+    {
+        ctx.fillStyle = 'brown';
+        ctx.fill();
+    }
 
     //Connect the squares  
     ctx.strokeStyle = 'white';        
     for(var i = 0; i < 4; i++)
     {
-        ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
+        //ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
         ctx.beginPath();        
         ctx.moveTo(square.points[i][0] + offsetX, square.points[i][1] + offsetY);
         ctx.lineTo(square.points[i+4][0] + offsetX, square.points[i+4][1] + offsetY);
@@ -159,8 +155,12 @@ function draw()
     }
     ctx.strokeStyle = 'white';
     ctx.stroke();
-    ctx.fillStyle = 'rgba(150, 150, 150, 0.75)';
-    ctx.fill();
+    if(!wireframe)
+    {
+        ctx.fillStyle = 'rgba(150, 150, 150, 0.5)';
+        ctx.fill();
+    }
+
 }
 
 function mainAnimationLoop()
@@ -173,10 +173,10 @@ function mainAnimationLoop()
     rot.X += 0;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 0;
+    rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 1;
+    rot.Z += 0;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
