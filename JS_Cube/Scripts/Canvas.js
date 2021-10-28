@@ -13,7 +13,7 @@ var points = [[0, 0],
               [7, 7]];
 
 var rot = { //Rotation values in degrees
-    X: 0,
+    X: 90,
     Y: 0,
     Z: 0,
 };
@@ -63,12 +63,29 @@ function setPoints()
     points[2] = [1, 1];
     points[3] = [0, 1]
 
-    let dX = Math.cos(degToRad(rot.X));
-    let dy = Math.sin(degToRad(rot.Y));
+
+    //Z axis rotation
     for(let i = 0; i < 4; i++)
     {
-        // points[i][0] = points[i][0] + dX/2;
-        // points[i][1] = points[i][1] + dy/2;
+        //console.log(i);        
+        let newX = (Math.cos(rot.Z)*(points[i][0])) - (Math.sin(rot.Z)*(points[i][1]));
+        let newY = (Math.cos(rot.Z)*(points[i][0])) + (Math.sin(rot.Z)*(points[i][1]));
+
+        points[i][0] = newX;
+        points[i][1] = newY
+    }
+
+    //X axis rotation
+    let dX = Math.cos(degToRad(rot.X));
+
+    //Y axis rotation
+    let dy = Math.sin(degToRad(rot.Y)); 
+    
+    //Update points
+    for(let i = 0; i < 4; i++)
+    {
+        points[i][0] = points[i][0] + dX/2;
+        points[i][1] = points[i][1] + dy/2;
         points[i+4][0] = points[i][0] + dX/2;
         points[i+4][1] = points[i][1] + dy/2;
     }
@@ -126,18 +143,21 @@ function draw()
 
 function mainAnimationLoop()
 {    
+    //Setup
     validateCanvasSize();
-
     clearScreen('black');
+
+    //Rotation
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1;
+    rot.Y += 1.1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 1;
+    rot.Z += 0.01;
     rot.Z = normaliseAngle(rot.Z);
 
+    //Draw
     setPoints();
     draw();
 
