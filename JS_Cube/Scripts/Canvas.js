@@ -13,7 +13,7 @@ var points = [[0, 0],
               [7, 7]];
 
 var rot = { //Rotation values in degrees
-    X: 90,
+    X: 0,
     Y: 0,
     Z: 0,
 };
@@ -28,6 +28,25 @@ function setupCanvas() {
     canvas.height = height;
 
     return canvas.getContext('2d');
+}
+
+function validateCanvasSize()
+{
+    let canvasNeedsUpdate = false;
+
+    if(width != window.innerWidth) {
+        width = window.innerWidth;
+        canvasNeedsUpdate = true;
+    }
+    if(height != window.innerHeight) {        
+        height = window.innerHeight;
+        canvasNeedsUpdate = true;
+    }
+
+    if(canvasNeedsUpdate)
+    {
+        setupCanvas();
+    }
 }
 
 function clearScreen(fillStyle)
@@ -106,12 +125,14 @@ function draw()
 }
 
 function mainAnimationLoop()
-{
+{    
+    validateCanvasSize();
+
     clearScreen('black');
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1.1;
+    rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
     rot.Z += 1;
