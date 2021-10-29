@@ -165,52 +165,56 @@ function defineFaces()
     cube.faces.faceTop.vertices =   [[cube.points[0]], [cube.points[1]], [cube.points[5]], [cube.points[4]]];
     cube.faces.faceBottom.vertices =[[cube.points[3]], [cube.points[2]], [cube.points[6]], [cube.points[7]]];
 
-    let avgPoint = 0;
+    let centerPoint = 0;
     //Front face
-    avgPoint = findAvgPoint(cube.faces.faceFront);
-    cube.faces.faceFront.avgX = avgPoint[0];    
-    cube.faces.faceFront.avgY = avgPoint[1];    
-    cube.faces.faceFront.avgZ = avgPoint[2];    
+    centerPoint = findCenterPoint(cube.faces.faceFront);
+    cube.faces.faceFront.avgX = centerPoint.X;    
+    cube.faces.faceFront.avgY = centerPoint.Y;    
+    cube.faces.faceFront.avgZ = centerPoint.Z;    
 
     //Back Face
-    avgPoint = findAvgPoint(cube.faces.faceBack);
-    cube.faces.faceBack.avgX = avgPoint[0];    
-    cube.faces.faceBack.avgY = avgPoint[1];    
-    cube.faces.faceBack.avgZ = avgPoint[2]; 
+    centerPoint = findCenterPoint(cube.faces.faceBack);
+    cube.faces.faceBack.avgX = centerPoint.X;    
+    cube.faces.faceBack.avgY = centerPoint.Y;    
+    cube.faces.faceBack.avgZ = centerPoint.Z; 
 
     //Left Face
-    avgPoint = findAvgPoint(cube.faces.faceLeft);
-    cube.faces.faceLeft.avgX = avgPoint[0];    
-    cube.faces.faceLeft.avgY = avgPoint[1];    
-    cube.faces.faceLeft.avgZ = avgPoint[2]; 
+    centerPoint = findCenterPoint(cube.faces.faceLeft);
+    cube.faces.faceLeft.avgX = centerPoint.X;    
+    cube.faces.faceLeft.avgY = centerPoint.Y;    
+    cube.faces.faceLeft.avgZ = centerPoint.Z; 
 
     //Right Face
-    avgPoint = findAvgPoint(cube.faces.faceRight);
-    cube.faces.faceRight.avgX = avgPoint[0];    
-    cube.faces.faceRight.avgY = avgPoint[1];    
-    cube.faces.faceRight.avgZ = avgPoint[2]; 
+    centerPoint = findCenterPoint(cube.faces.faceRight);
+    cube.faces.faceRight.avgX = centerPoint.X;    
+    cube.faces.faceRight.avgY = centerPoint.X;    
+    cube.faces.faceRight.avgZ = centerPoint.Z; 
 
     //Top Face
-    avgPoint = findAvgPoint(cube.faces.faceTop);
-    cube.faces.faceTop.avgX = avgPoint[0];    
-    cube.faces.faceTop.avgY = avgPoint[1];    
-    cube.faces.faceTop.avgZ = avgPoint[2]; 
+    centerPoint = findCenterPoint(cube.faces.faceTop);
+    cube.faces.faceTop.avgX = centerPoint.X;    
+    cube.faces.faceTop.avgY = centerPoint.Y;    
+    cube.faces.faceTop.avgZ = centerPoint.Z; 
 
     //Bottom Face
-    avgPoint = findAvgPoint(cube.faces.faceBottom);
-    cube.faces.faceBottom.avgX = avgPoint[0];    
-    cube.faces.faceBottom.avgY = avgPoint[1];    
-    cube.faces.faceBottom.avgZ = avgPoint[2]; 
+    centerPoint = findCenterPoint(cube.faces.faceBottom);
+    cube.faces.faceBottom.avgX = centerPoint.X;    
+    cube.faces.faceBottom.avgY = centerPoint.Y;    
+    cube.faces.faceBottom.avgZ = centerPoint.Z; 
 }
 
-function findAvgPoint(face) {
-    let avgPoint = [0, 0, 0];
+function findCenterPoint(face) {
+    let centerPoint = {
+        X: 0,
+        Y: 0,
+        Z: 0
+    };
 
-    avgPoint[0] = (face.vertices[0][0][0] + face.vertices[1][0][0] + face.vertices[2][0][0] + face.vertices[3][0][0])/4;
-    avgPoint[1] = (face.vertices[0][0][1] + face.vertices[1][0][1] + face.vertices[2][0][1] + face.vertices[3][0][1])/4;
-    avgPoint[2] = (face.vertices[0][0][2] + face.vertices[1][0][2] + face.vertices[2][0][2] + face.vertices[3][0][2])/4;
+    centerPoint.X = (face.vertices[0][0][0] + face.vertices[1][0][0] + face.vertices[2][0][0] + face.vertices[3][0][0])/4;
+    centerPoint.Y = (face.vertices[0][0][1] + face.vertices[1][0][1] + face.vertices[2][0][1] + face.vertices[3][0][1])/4;
+    centerPoint.Z = (face.vertices[0][0][2] + face.vertices[1][0][2] + face.vertices[2][0][2] + face.vertices[3][0][2])/4;
     
-    return avgPoint;
+    return centerPoint;
 }
 
 function draw()
