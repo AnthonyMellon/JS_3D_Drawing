@@ -8,13 +8,15 @@ var rot = { //Rotation values in degrees
     Z: 0,
 };
 
-var square = {
+var cube = {
     size: 100,
+
     position: {
         X: 500,
         Y: 500,
         Z: 500
     },
+
     points: points = [[0, 0, 0],
                       [1, 1, 1],
                       [2, 2, 2],
@@ -23,6 +25,45 @@ var square = {
                       [5, 5, 5],
                       [6, 6, 6],
                       [7, 7, 7]],
+
+    faces: {
+        faceFront: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+        faceBack: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+        faceLeft: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+        faceRight: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+        faceTop: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+        faceBottom: {
+            vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            avgX: 0,
+            avgY: 0,
+            avgZ: 0
+        },
+    },
 
 }
 
@@ -66,53 +107,110 @@ function clearScreen(fillStyle)
 }
 
 
-function setPoints()
+function rotatePoints()
 {
     //Set front points to how they would be in a normal square PUT THIS IN A LOOP >:( )    
-    square.points[0] = [square.position.X - square.size/2, square.position.Y - square.size/2, square.position.Z + square.size/2];
-    square.points[1] = [square.position.X + square.size/2, square.position.Y - square.size/2, square.position.Z + square.size/2];
-    square.points[2] = [square.position.X + square.size/2, square.position.Y + square.size/2, square.position.Z + square.size/2];
-    square.points[3] = [square.position.X - square.size/2, square.position.Y + square.size/2, square.position.Z + square.size/2];
-    square.points[4] = [square.position.X - square.size/2, square.position.Y - square.size/2, square.position.Z - square.size/2];
-    square.points[5] = [square.position.X + square.size/2, square.position.Y - square.size/2, square.position.Z - square.size/2];
-    square.points[6] = [square.position.X + square.size/2, square.position.Y + square.size/2, square.position.Z - square.size/2];
-    square.points[7] = [square.position.X - square.size/2, square.position.Y + square.size/2, square.position.Z - square.size/2];
-
-    //Z axis rotation
-    for(let i = 0; i < 8; i++)
-    {         
-        square.points[i][0] -= square.position.X;
-        square.points[i][1] -= square.position.Y;
-        let newPoint = rotatePoint([square.points[i][0], square.points[i][1]], degToRad(rot.Z));
-        square.points[i][0] = newPoint[0];
-        square.points[i][1] = newPoint[1];
-        square.points[i][0] += square.position.X;
-        square.points[i][1] += square.position.Y;
-    }
+    cube.points[0] = [cube.position.X - cube.size/2, cube.position.Y - cube.size/2, cube.position.Z + cube.size/2];
+    cube.points[1] = [cube.position.X + cube.size/2, cube.position.Y - cube.size/2, cube.position.Z + cube.size/2];
+    cube.points[2] = [cube.position.X + cube.size/2, cube.position.Y + cube.size/2, cube.position.Z + cube.size/2];
+    cube.points[3] = [cube.position.X - cube.size/2, cube.position.Y + cube.size/2, cube.position.Z + cube.size/2];
+    cube.points[4] = [cube.position.X - cube.size/2, cube.position.Y - cube.size/2, cube.position.Z - cube.size/2];
+    cube.points[5] = [cube.position.X + cube.size/2, cube.position.Y - cube.size/2, cube.position.Z - cube.size/2];
+    cube.points[6] = [cube.position.X + cube.size/2, cube.position.Y + cube.size/2, cube.position.Z - cube.size/2];
+    cube.points[7] = [cube.position.X - cube.size/2, cube.position.Y + cube.size/2, cube.position.Z - cube.size/2];
 
     //X axis rotation
     for(let i = 0; i < 8; i++)    
     {         
-        square.points[i][1] -= square.position.Y;
-        square.points[i][2] -= square.position.Z;
-        let newPoint = rotatePoint([square.points[i][1], square.points[i][2]], degToRad(rot.X));
-        square.points[i][1] = newPoint[0]; 
-        square.points[i][2] = newPoint[1]; 
-        square.points[i][1] += square.position.Y;
-        square.points[i][2] += square.position.Z;
+        cube.points[i][1] -= cube.position.Y;
+        cube.points[i][2] -= cube.position.Z;
+        let newPoint = rotatePoint([cube.points[i][1], cube.points[i][2]], degToRad(rot.X));
+        cube.points[i][1] = newPoint[0]; 
+        cube.points[i][2] = newPoint[1]; 
+        cube.points[i][1] += cube.position.Y;
+        cube.points[i][2] += cube.position.Z;
     }
 
     //Y axis rotation
     for(let i = 0; i < 8; i++)    
     {         
-        square.points[i][0] -= square.position.X;
-        square.points[i][2] -= square.position.Z;
-        let newPoint = rotatePoint([square.points[i][0], square.points[i][2]], degToRad(rot.Y));
-        square.points[i][0] = newPoint[0]; 
-        square.points[i][2] = newPoint[1]; 
-        square.points[i][0] += square.position.X;
-        square.points[i][2] += square.position.Z;
+        cube.points[i][0] -= cube.position.X;
+        cube.points[i][2] -= cube.position.Z;
+        let newPoint = rotatePoint([cube.points[i][0], cube.points[i][2]], degToRad(rot.Y));
+        cube.points[i][0] = newPoint[0]; 
+        cube.points[i][2] = newPoint[1]; 
+        cube.points[i][0] += cube.position.X;
+        cube.points[i][2] += cube.position.Z;
     }
+
+    //Z axis rotation
+    for(let i = 0; i < 8; i++)
+    {         
+        cube.points[i][0] -= cube.position.X;
+        cube.points[i][1] -= cube.position.Y;
+        let newPoint = rotatePoint([cube.points[i][0], cube.points[i][1]], degToRad(rot.Z));
+        cube.points[i][0] = newPoint[0];
+        cube.points[i][1] = newPoint[1];
+        cube.points[i][0] += cube.position.X;
+        cube.points[i][1] += cube.position.Y;
+    }
+}
+
+function defineFaces()
+{    
+    cube.faces.faceFront.vertices = [[cube.points[0]], [cube.points[1]], [cube.points[2]], [cube.points[3]]];
+    cube.faces.faceBack.vertices =  [[cube.points[4]], [cube.points[5]], [cube.points[6]], [cube.points[7]]];
+    cube.faces.faceLeft.vertices =  [[cube.points[0]], [cube.points[4]], [cube.points[7]], [cube.points[3]]];
+    cube.faces.faceRight.vertices = [[cube.points[1]], [cube.points[5]], [cube.points[6]], [cube.points[2]]];
+    cube.faces.faceTop.vertices =   [[cube.points[0]], [cube.points[1]], [cube.points[5]], [cube.points[4]]];
+    cube.faces.faceBottom.vertices =[[cube.points[3]], [cube.points[2]], [cube.points[6]], [cube.points[7]]];
+
+    let avgPoint = 0;
+    //Front face
+    avgPoint = findAvgPoint(cube.faces.faceFront);
+    cube.faces.faceFront.avgX = avgPoint[0];    
+    cube.faces.faceFront.avgY = avgPoint[1];    
+    cube.faces.faceFront.avgZ = avgPoint[2];    
+
+    //Back Face
+    avgPoint = findAvgPoint(cube.faces.faceBack);
+    cube.faces.faceBack.avgX = avgPoint[0];    
+    cube.faces.faceBack.avgY = avgPoint[1];    
+    cube.faces.faceBack.avgZ = avgPoint[2]; 
+
+    //Left Face
+    avgPoint = findAvgPoint(cube.faces.faceLeft);
+    cube.faces.faceLeft.avgX = avgPoint[0];    
+    cube.faces.faceLeft.avgY = avgPoint[1];    
+    cube.faces.faceLeft.avgZ = avgPoint[2]; 
+
+    //Right Face
+    avgPoint = findAvgPoint(cube.faces.faceRight);
+    cube.faces.faceRight.avgX = avgPoint[0];    
+    cube.faces.faceRight.avgY = avgPoint[1];    
+    cube.faces.faceRight.avgZ = avgPoint[2]; 
+
+    //Top Face
+    avgPoint = findAvgPoint(cube.faces.faceTop);
+    cube.faces.faceTop.avgX = avgPoint[0];    
+    cube.faces.faceTop.avgY = avgPoint[1];    
+    cube.faces.faceTop.avgZ = avgPoint[2]; 
+
+    //Bottom Face
+    avgPoint = findAvgPoint(cube.faces.faceBottom);
+    cube.faces.faceBottom.avgX = avgPoint[0];    
+    cube.faces.faceBottom.avgY = avgPoint[1];    
+    cube.faces.faceBottom.avgZ = avgPoint[2]; 
+}
+
+function findAvgPoint(face) {
+    let avgPoint = [0, 0, 0];
+
+    avgPoint[0] = (face.vertices[0][0][0] + face.vertices[1][0][0] + face.vertices[2][0][0] + face.vertices[3][0][0])/4;
+    avgPoint[1] = (face.vertices[0][0][1] + face.vertices[1][0][1] + face.vertices[2][0][1] + face.vertices[3][0][1])/4;
+    avgPoint[2] = (face.vertices[0][0][2] + face.vertices[1][0][2] + face.vertices[2][0][2] + face.vertices[3][0][2])/4;
+    
+    return avgPoint;
 }
 
 function draw()
@@ -127,10 +225,10 @@ function draw()
 
     //Draw back square       
     ctx.beginPath();
-    ctx.moveTo(square.points[4][0] + offsetX, square.points[4][1] + offsetY);
+    ctx.moveTo(cube.points[4][0] + offsetX, cube.points[4][1] + offsetY);
     for(var i = 1; i < 5; i++)
     {
-        ctx.lineTo(square.points[(i%4)+4][0] + offsetX, square.points[(i%4)+4][1] + offsetY);
+        ctx.lineTo(cube.points[(i%4)+4][0] + offsetX, cube.points[(i%4)+4][1] + offsetY);
     }
     ctx.stroke();
     if(!wireframe)
@@ -145,17 +243,17 @@ function draw()
     {
         //ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
         ctx.beginPath();        
-        ctx.moveTo(square.points[i][0] + offsetX, square.points[i][1] + offsetY);
-        ctx.lineTo(square.points[i+4][0] + offsetX, square.points[i+4][1] + offsetY);
+        ctx.moveTo(cube.points[i][0] + offsetX, cube.points[i][1] + offsetY);
+        ctx.lineTo(cube.points[i+4][0] + offsetX, cube.points[i+4][1] + offsetY);
         ctx.stroke();
     }
 
     //Draw front square
     ctx.beginPath();   
-    ctx.moveTo(square.points[0][0] + offsetX, square.points[0][1] + offsetY);
+    ctx.moveTo(cube.points[0][0] + offsetX, cube.points[0][1] + offsetY);
     for(var i = 1; i < 5; i++)
     {
-        ctx.lineTo(square.points[i%4][0] + offsetX, square.points[i%4][1] + offsetY);
+        ctx.lineTo(cube.points[i%4][0] + offsetX, cube.points[i%4][1] + offsetY);
     }
     ctx.strokeStyle = 'white';
     ctx.stroke();
@@ -174,17 +272,18 @@ function mainAnimationLoop()
     clearScreen('black');
 
     //Rotation
-    rot.X += 1;
+    rot.X += 0;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1;
+    rot.Y += 0;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 1;
+    rot.Z += 0;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
-    setPoints();
+    defineFaces();
+    rotatePoints();
     draw();
 
     requestAnimationFrame(mainAnimationLoop);    
