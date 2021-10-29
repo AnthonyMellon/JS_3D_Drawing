@@ -3,7 +3,7 @@ var height;
 var ctx;
 
 var rot = { //Rotation values in degrees
-    X: 90,
+    X: 0,
     Y: 0,
     Z: 0,
 };
@@ -79,14 +79,16 @@ function setPoints()
     square.points[7] = [square.position.X - square.size/2, square.position.Y + square.size/2, square.position.Z - square.size/2];
 
     //Z axis rotation
-    // for(let i = 0; i < 8; i++)
-    // {         
-    //     square.points[i][0] -= square.position.X;
-    //     square.points[i][1] -= square.position.Y;
-    //     square.points[i] = rotatePoint([square.points[i][0], square.points[i][1]], degToRad(rot.Z));
-    //     square.points[i][0] += square.position.X;
-    //     square.points[i][1] += square.position.Y;
-    // }
+    for(let i = 0; i < 8; i++)
+    {         
+        square.points[i][0] -= square.position.X;
+        square.points[i][1] -= square.position.Y;
+        let newPoint = rotatePoint([square.points[i][0], square.points[i][1]], degToRad(rot.Z));
+        square.points[i][0] = newPoint[0];
+        square.points[i][1] = newPoint[1];
+        square.points[i][0] += square.position.X;
+        square.points[i][1] += square.position.Y;
+    }
 
     //X axis rotation
     for(let i = 0; i < 8; i++)    
@@ -94,23 +96,23 @@ function setPoints()
         square.points[i][1] -= square.position.Y;
         square.points[i][2] -= square.position.Z;
         let newPoint = rotatePoint([square.points[i][1], square.points[i][2]], degToRad(rot.X));
-        square.points[i][1] = newPoint[1]; 
+        square.points[i][1] = newPoint[0]; 
         square.points[i][2] = newPoint[1]; 
         square.points[i][1] += square.position.Y;
         square.points[i][2] += square.position.Z;
     }
 
     //Y axis rotation
-    // for(let i = 0; i < 8; i++)    
-    // {         
-    //     square.points[i][0] -= square.position.X;
-    //     square.points[i][2] -= square.position.Z;
-    //     let newPoint = rotatePoint([square.points[i][0], square.points[i][2]], degToRad(rot.Y));
-    //     square.points[i][0] = newPoint[0]; 
-    //     square.points[i][2] = newPoint[1]; 
-    //     square.points[i][0] += square.position.X;
-    //     square.points[i][2] += square.position.Z;
-    // }
+    for(let i = 0; i < 8; i++)    
+    {         
+        square.points[i][0] -= square.position.X;
+        square.points[i][2] -= square.position.Z;
+        let newPoint = rotatePoint([square.points[i][0], square.points[i][2]], degToRad(rot.Y));
+        square.points[i][0] = newPoint[0]; 
+        square.points[i][2] = newPoint[1]; 
+        square.points[i][0] += square.position.X;
+        square.points[i][2] += square.position.Z;
+    }
 }
 
 function draw()
@@ -178,7 +180,7 @@ function mainAnimationLoop()
     rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 0;
+    rot.Z += 1;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
