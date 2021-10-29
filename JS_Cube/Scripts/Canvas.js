@@ -12,16 +12,17 @@ var square = {
     size: 100,
     position: {
         X: 500,
-        Y: 500
+        Y: 500,
+        Z: 500
     },
-    points: points = [[0, 0],
-                      [1, 1],
-                      [2, 2],
-                      [3, 3],
-                      [4, 4],
-                      [5, 5],
-                      [6, 6],
-                      [7, 7]],
+    points: points = [[0, 0, 0],
+                      [1, 1, 1],
+                      [2, 2, 2],
+                      [3, 3, 3],
+                      [4, 4, 4],
+                      [5, 5, 5],
+                      [6, 6, 6],
+                      [7, 7, 7]],
 
 }
 
@@ -68,47 +69,48 @@ function clearScreen(fillStyle)
 function setPoints()
 {
     //Set front points to how they would be in a normal square PUT THIS IN A LOOP >:( )    
-    square.points[0] = [square.position.X - square.size/2, square.position.Y - square.size/2];
-    square.points[1] = [square.position.X + square.size/2, square.position.Y - square.size/2];
-    square.points[2] = [square.position.X + square.size/2, square.position.Y + square.size/2];
-    square.points[3] = [square.position.X - square.size/2, square.position.Y + square.size/2];
-    square.points[4] = [square.position.X - square.size/2, square.position.Y - square.size/2];
-    square.points[5] = [square.position.X + square.size/2, square.position.Y - square.size/2];
-    square.points[6] = [square.position.X + square.size/2, square.position.Y + square.size/2];
-    square.points[7] = [square.position.X - square.size/2, square.position.Y + square.size/2];
+    square.points[0] = [square.position.X - square.size/2, square.position.Y - square.size/2, square.position.Z + square.size/2];
+    square.points[1] = [square.position.X + square.size/2, square.position.Y - square.size/2, square.position.Z + square.size/2];
+    square.points[2] = [square.position.X + square.size/2, square.position.Y + square.size/2, square.position.Z + square.size/2];
+    square.points[3] = [square.position.X - square.size/2, square.position.Y + square.size/2, square.position.Z + square.size/2];
+    square.points[4] = [square.position.X - square.size/2, square.position.Y - square.size/2, square.position.Z - square.size/2];
+    square.points[5] = [square.position.X + square.size/2, square.position.Y - square.size/2, square.position.Z - square.size/2];
+    square.points[6] = [square.position.X + square.size/2, square.position.Y + square.size/2, square.position.Z - square.size/2];
+    square.points[7] = [square.position.X - square.size/2, square.position.Y + square.size/2, square.position.Z - square.size/2];
 
     //Z axis rotation
-    for(let i = 0; i < 8; i++)
-    {         
-        square.points[i][0] -= square.position.X;
-        square.points[i][1] -= square.position.Y;
-        square.points[i] = rotatePoint(square.points[i], degToRad(rot.Z));
-        square.points[i][0] += square.position.X;
-        square.points[i][1] += square.position.Y;
-    }
+    // for(let i = 0; i < 8; i++)
+    // {         
+    //     square.points[i][0] -= square.position.X;
+    //     square.points[i][1] -= square.position.Y;
+    //     square.points[i] = rotatePoint([square.points[i][0], square.points[i][1]], degToRad(rot.Z));
+    //     square.points[i][0] += square.position.X;
+    //     square.points[i][1] += square.position.Y;
+    // }
 
     //X axis rotation
-
-    //Y axis rotation
-    for(let i = 0; i < 4; i++)
-    {
-        let newFront = 0;
-        let newBack = 0;
-
-        let myFrontPoint = 0;
-        let myBackPoint = 0;
-
-        myFrontPoint = square.points[i][0] - square.position.X;
-        myBackPoint = square.points[i+4][0] - square.position.X;
-
-        newFront = (myFrontPoint) * Math.sin(degToRad(rot.Y));
-        newBack = (myBackPoint) * Math.cos(degToRad(rot.Y));
-
-        square.points[i][0] = newFront + square.position.X;
-        square.points[i+4][0] = newBack + square.position.X;
+    for(let i = 0; i < 8; i++)    
+    {         
+        square.points[i][1] -= square.position.Y;
+        square.points[i][2] -= square.position.Z;
+        let newPoint = rotatePoint([square.points[i][1], square.points[i][2]], degToRad(rot.X));
+        square.points[i][1] = newPoint[1]; 
+        square.points[i][2] = newPoint[1]; 
+        square.points[i][1] += square.position.Y;
+        square.points[i][2] += square.position.Z;
     }
 
-    
+    //Y axis rotation
+    // for(let i = 0; i < 8; i++)    
+    // {         
+    //     square.points[i][0] -= square.position.X;
+    //     square.points[i][2] -= square.position.Z;
+    //     let newPoint = rotatePoint([square.points[i][0], square.points[i][2]], degToRad(rot.Y));
+    //     square.points[i][0] = newPoint[0]; 
+    //     square.points[i][2] = newPoint[1]; 
+    //     square.points[i][0] += square.position.X;
+    //     square.points[i][2] += square.position.Z;
+    // }
 }
 
 function draw()
@@ -170,7 +172,7 @@ function mainAnimationLoop()
     clearScreen('black');
 
     //Rotation
-    rot.X += 0;
+    rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
     rot.Y += 1;
