@@ -31,37 +31,43 @@ var cube = {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(255, 0, 0)'
         },
         faceBack: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(0, 255, 0)'
         },
         faceLeft: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(0, 0, 255)'
         },
         faceRight: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(255, 0, 240)'
         },
         faceTop: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(255, 190, 0)'
         },
         faceBottom: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
-            avgZ: 0
+            avgZ: 0,
+            colour: 'rgb(255, 255, 0)'
         },
     },
 
@@ -219,56 +225,68 @@ function findCenterPoint(face) {
     return centerPoint;
 }
 
-function draw() { //Draws the cube to the screen
-   
-    let wireframe = false;
-
-    let offsetX = 0;
-    let offsetY = 0;
+function DrawCube(drawMode) {
 
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'white';
 
-    //Draw back square       
-    ctx.beginPath();
-    ctx.moveTo(cube.points[4][0] + offsetX, cube.points[4][1] + offsetY);
-    for(var i = 1; i < 5; i++) {
-    
-        ctx.lineTo(cube.points[(i%4)+4][0] + offsetX, cube.points[(i%4)+4][1] + offsetY);
-    }
-    ctx.stroke();
-    if(!wireframe) {
-    
-        ctx.fillStyle = 'brown';
-        ctx.fill();
-    }
+    let facesToDraw = [
+                        cube.faces.faceFront, 
+                        cube.faces.faceBack, 
+                        cube.faces.faceLeft, 
+                        cube.faces.faceRight, 
+                        cube.faces.faceTop, 
+                        cube.faces.faceBottom
+                        ];
 
-    //Connect the squares  
-    ctx.strokeStyle = 'white';        
-    for(var i = 0; i < 4; i++) {
-    
-        //ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
-        ctx.beginPath();        
-        ctx.moveTo(cube.points[i][0] + offsetX, cube.points[i][1] + offsetY);
-        ctx.lineTo(cube.points[i+4][0] + offsetX, cube.points[i+4][1] + offsetY);
-        ctx.stroke();
+    for(let i = 0; i < facesToDraw.length - 1; i++) {
+
+        for(let j = 0; j < facesToDraw.length - i - 1; j++) {
+
+            if(facesToDraw[j].avgZ > facesToDraw[j + 1].avgZ) {
+
+                let temp = facesToDraw[j];
+                facesToDraw[j] = facesToDraw[j + 1]
+                facesToDraw[j + 1] = temp;
+            }
+        }
     }
 
-    //Draw front square
-    ctx.beginPath();   
-    ctx.moveTo(cube.points[0][0] + offsetX, cube.points[0][1] + offsetY);
-    for(var i = 1; i < 5; i++) {
-    
-        ctx.lineTo(cube.points[i%4][0] + offsetX, cube.points[i%4][1] + offsetY);
-    }
-    ctx.strokeStyle = 'white';
-    ctx.stroke();
-    if(!wireframe) {
-    
-        ctx.fillStyle = 'rgba(150, 150, 150, 1)';
-        ctx.fill();
-    }
+    for(let i = 0; i < facesToDraw.length; i++) { //Draw each face
 
+        ctx.beginPath();
+
+        let startX = facesToDraw[i].vertices[0][0][0];
+        let startY = facesToDraw[i].vertices[0][0][1];  
+  
+        ctx.moveTo(startX, startY);
+
+        for(let j = 1; j < facesToDraw[i].vertices.length; j++) { //Trace to each vertex in the current face
+
+            let x = facesToDraw[i].vertices[j][0][0];
+            let y = facesToDraw[i].vertices[j][0][1];
+            ctx.lineTo(x, y);  
+                        
+        }  
+        ctx.lineTo(startX, startY);
+        
+        //Draw according to darwMode
+        if(drawMode === 'solid') {
+            ctx.fillStyle = facesToDraw[i].colour;
+            ctx.fill();
+        }
+        else if(drawMode === 'solidOutlined') {
+            ctx.fillStyle = facesToDraw[i].colour;
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+
+        }
+        else { //Default to a wireframe view
+            ctx.strokeStyle = facesToDraw[i].colour;
+            ctx.stroke();
+        }
+        
+    }
 }
 
 function mainAnimationLoop() { //Main animation loop, runs once each frame
@@ -281,16 +299,16 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 0;
+    rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 0;
+    rot.Z += 1;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
     defineFaces();
     rotatePoints();
-    draw();
+    DrawCube('solidOutlined');
 
     requestAnimationFrame(mainAnimationLoop);    
 }
