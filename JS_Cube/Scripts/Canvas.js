@@ -32,42 +32,42 @@ var cube = {
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(255, 0, 0)'
+            colour: 'white'
         },
         faceBack: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(0, 255, 0)'
+            colour: 'white'
         },
         faceLeft: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(0, 0, 255)'
+            colour: 'white'
         },
         faceRight: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(255, 0, 240)'
+            colour: 'white'
         },
         faceTop: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(255, 190, 0)'
+            colour: 'white'
         },
         faceBottom: {
             vertices: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
             avgX: 0,
             avgY: 0,
             avgZ: 0,
-            colour: 'rgb(255, 255, 0)'
+            colour: 'white'
         },
     },
 
@@ -177,37 +177,43 @@ function defineFaces() { //Define the six faces of the cube
     centerPoint = findCenterPoint(cube.faces.faceFront);
     cube.faces.faceFront.avgX = centerPoint.X;    
     cube.faces.faceFront.avgY = centerPoint.Y;    
-    cube.faces.faceFront.avgZ = centerPoint.Z;    
+    cube.faces.faceFront.avgZ = centerPoint.Z;  
+    cube.faces.faceFront.colour = 'rgb(255, 0, 0)';  
 
     //Back Face
     centerPoint = findCenterPoint(cube.faces.faceBack);
     cube.faces.faceBack.avgX = centerPoint.X;    
     cube.faces.faceBack.avgY = centerPoint.Y;    
     cube.faces.faceBack.avgZ = centerPoint.Z; 
+    cube.faces.faceBack.colour = 'rgb(0, 255, 0)'; 
 
     //Left Face
     centerPoint = findCenterPoint(cube.faces.faceLeft);
     cube.faces.faceLeft.avgX = centerPoint.X;    
     cube.faces.faceLeft.avgY = centerPoint.Y;    
     cube.faces.faceLeft.avgZ = centerPoint.Z; 
+    cube.faces.faceLeft.colour = 'rgb(255, 0, 255)'; 
 
     //Right Face
     centerPoint = findCenterPoint(cube.faces.faceRight);
     cube.faces.faceRight.avgX = centerPoint.X;    
     cube.faces.faceRight.avgY = centerPoint.X;    
     cube.faces.faceRight.avgZ = centerPoint.Z; 
+    cube.faces.faceRight.colour = 'rgb(255, 0, 240)'; 
 
     //Top Face
     centerPoint = findCenterPoint(cube.faces.faceTop);
     cube.faces.faceTop.avgX = centerPoint.X;    
     cube.faces.faceTop.avgY = centerPoint.Y;    
     cube.faces.faceTop.avgZ = centerPoint.Z; 
+    cube.faces.faceTop.colour = 'rgb(255, 190, 0)'; 
 
     //Bottom Face
     centerPoint = findCenterPoint(cube.faces.faceBottom);
     cube.faces.faceBottom.avgX = centerPoint.X;    
     cube.faces.faceBottom.avgY = centerPoint.Y;    
     cube.faces.faceBottom.avgZ = centerPoint.Z; 
+    cube.faces.faceBottom.colour = 'rgb(255, 255, 0)'; 
 }
 
 function findCenterPoint(face) {
@@ -299,10 +305,10 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
-    rot.Y += 1;
+    rot.Y += 1.5;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 1;
+    rot.Z += 0;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
