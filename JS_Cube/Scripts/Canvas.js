@@ -12,8 +12,8 @@ var cube = {
     size: 100,
 
     position: {
-        X: 500,
-        Y: 500,
+        X: 0,
+        Y: 0,
         Z: 0
     },
 
@@ -295,6 +295,12 @@ function DrawCube(drawMode) {
     }
 }
 
+function centerCube()
+{
+    cube.position.X = width/2;
+    cube.position.Y = height/2;
+}
+
 function mainAnimationLoop() { //Main animation loop, runs once each frame
     
     //Setup
@@ -312,8 +318,9 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
-    defineFaces();
+    centerCube();    
     rotatePoints();
+    defineFaces();
     DrawCube('solidOutlined');
 
     requestAnimationFrame(mainAnimationLoop);    
