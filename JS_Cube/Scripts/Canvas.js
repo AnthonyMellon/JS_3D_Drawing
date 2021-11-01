@@ -14,7 +14,7 @@ var cube = {
     position: {
         X: 500,
         Y: 500,
-        Z: 500
+        Z: 0
     },
 
     points: points = [[0, 0, 0],
@@ -69,7 +69,8 @@ var cube = {
 
 
 
-function setupCanvas() {
+function setupCanvas() { //Set the canvas up
+
     const canvas = document.querySelector('.myCanvas');
 
     width = window.innerWidth;
@@ -81,8 +82,8 @@ function setupCanvas() {
     return canvas.getContext('2d');
 }
 
-function validateCanvasSize()
-{
+function validateCanvasSize() { //Ensure the canvas is the same size as the window
+
     let canvasNeedsUpdate = false;
 
     if(width != window.innerWidth) {
@@ -100,15 +101,15 @@ function validateCanvasSize()
     }
 }
 
-function clearScreen(fillStyle)
-{
+function clearScreen(fillStyle) { //Reset the screen to plain black
+
     ctx.fillStyle = fillStyle;
     ctx.fillRect(0, 0, width, height);
 }
 
 
-function rotatePoints()
-{
+function rotatePoints() { //Rotate the cubes vertices around the X Y and Z axis 
+
     //Set front points to how they would be in a normal square PUT THIS IN A LOOP >:( )    
     cube.points[0] = [cube.position.X - cube.size/2, cube.position.Y - cube.size/2, cube.position.Z + cube.size/2];
     cube.points[1] = [cube.position.X + cube.size/2, cube.position.Y - cube.size/2, cube.position.Z + cube.size/2];
@@ -120,8 +121,8 @@ function rotatePoints()
     cube.points[7] = [cube.position.X - cube.size/2, cube.position.Y + cube.size/2, cube.position.Z - cube.size/2];
 
     //X axis rotation
-    for(let i = 0; i < 8; i++)    
-    {         
+    for(let i = 0; i < 8; i++) {    
+             
         cube.points[i][1] -= cube.position.Y;
         cube.points[i][2] -= cube.position.Z;
         let newPoint = rotatePoint([cube.points[i][1], cube.points[i][2]], degToRad(rot.X));
@@ -132,8 +133,8 @@ function rotatePoints()
     }
 
     //Y axis rotation
-    for(let i = 0; i < 8; i++)    
-    {         
+    for(let i = 0; i < 8; i++) {  
+             
         cube.points[i][0] -= cube.position.X;
         cube.points[i][2] -= cube.position.Z;
         let newPoint = rotatePoint([cube.points[i][0], cube.points[i][2]], degToRad(rot.Y));
@@ -144,8 +145,8 @@ function rotatePoints()
     }
 
     //Z axis rotation
-    for(let i = 0; i < 8; i++)
-    {         
+    for(let i = 0; i < 8; i++) {
+             
         cube.points[i][0] -= cube.position.X;
         cube.points[i][1] -= cube.position.Y;
         let newPoint = rotatePoint([cube.points[i][0], cube.points[i][1]], degToRad(rot.Z));
@@ -156,8 +157,8 @@ function rotatePoints()
     }
 }
 
-function defineFaces()
-{    
+function defineFaces() { //Define the six faces of the cube
+  
     cube.faces.faceFront.vertices = [[cube.points[0]], [cube.points[1]], [cube.points[2]], [cube.points[3]]];
     cube.faces.faceBack.vertices =  [[cube.points[4]], [cube.points[5]], [cube.points[6]], [cube.points[7]]];
     cube.faces.faceLeft.vertices =  [[cube.points[0]], [cube.points[4]], [cube.points[7]], [cube.points[3]]];
@@ -204,6 +205,7 @@ function defineFaces()
 }
 
 function findCenterPoint(face) {
+
     let centerPoint = {
         X: 0,
         Y: 0,
@@ -217,8 +219,8 @@ function findCenterPoint(face) {
     return centerPoint;
 }
 
-function draw()
-{   
+function draw() { //Draws the cube to the screen
+   
     let wireframe = false;
 
     let offsetX = 0;
@@ -230,21 +232,21 @@ function draw()
     //Draw back square       
     ctx.beginPath();
     ctx.moveTo(cube.points[4][0] + offsetX, cube.points[4][1] + offsetY);
-    for(var i = 1; i < 5; i++)
-    {
+    for(var i = 1; i < 5; i++) {
+    
         ctx.lineTo(cube.points[(i%4)+4][0] + offsetX, cube.points[(i%4)+4][1] + offsetY);
     }
     ctx.stroke();
-    if(!wireframe)
-    {
+    if(!wireframe) {
+    
         ctx.fillStyle = 'brown';
         ctx.fill();
     }
 
     //Connect the squares  
     ctx.strokeStyle = 'white';        
-    for(var i = 0; i < 4; i++)
-    {
+    for(var i = 0; i < 4; i++) {
+    
         //ctx.strokeStyle = `rgb(${255 - i*25}, ${i*50}, ${i*25})`
         ctx.beginPath();        
         ctx.moveTo(cube.points[i][0] + offsetX, cube.points[i][1] + offsetY);
@@ -255,28 +257,28 @@ function draw()
     //Draw front square
     ctx.beginPath();   
     ctx.moveTo(cube.points[0][0] + offsetX, cube.points[0][1] + offsetY);
-    for(var i = 1; i < 5; i++)
-    {
+    for(var i = 1; i < 5; i++) {
+    
         ctx.lineTo(cube.points[i%4][0] + offsetX, cube.points[i%4][1] + offsetY);
     }
     ctx.strokeStyle = 'white';
     ctx.stroke();
-    if(!wireframe)
-    {
-        ctx.fillStyle = 'rgba(150, 150, 150, 0.5)';
+    if(!wireframe) {
+    
+        ctx.fillStyle = 'rgba(150, 150, 150, 1)';
         ctx.fill();
     }
 
 }
 
-function mainAnimationLoop()
-{    
+function mainAnimationLoop() { //Main animation loop, runs once each frame
+    
     //Setup
-    validateCanvasSize();
+    validateCanvasSize();    
     clearScreen('black');
 
     //Rotation
-    rot.X += 0;
+    rot.X += 1;
     rot.X = normaliseAngle(rot.X);
 
     rot.Y += 0;
@@ -293,8 +295,8 @@ function mainAnimationLoop()
     requestAnimationFrame(mainAnimationLoop);    
 }
 
-function main()
-{
+function main() { //Main function for intial setup, only runs once
+
     console.log("drawing cube...");  
     ctx = setupCanvas();
     clearScreen('black');
