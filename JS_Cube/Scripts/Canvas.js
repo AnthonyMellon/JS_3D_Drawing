@@ -206,7 +206,7 @@ function defineFaces() { //Define the six faces of the cube
     cube.faces.faceTop.avgX = centerPoint.X;    
     cube.faces.faceTop.avgY = centerPoint.Y;    
     cube.faces.faceTop.avgZ = centerPoint.Z; 
-    cube.faces.faceTop.colour = 'rgba(255, 190, 0, 0.75)'; 
+    cube.faces.faceTop.colour = 'rgba(0, 0, 255, 0.75)'; 
 
     //Bottom Face
     centerPoint = findCenterPoint(cube.faces.faceBottom);
@@ -314,7 +314,7 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     rot.Y += 1;
     rot.Y = normaliseAngle(rot.Y);
 
-    rot.Z += 1;
+    rot.Z += 0;
     rot.Z = normaliseAngle(rot.Z);
 
     //Draw
