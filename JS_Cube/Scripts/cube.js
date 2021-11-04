@@ -38,7 +38,7 @@ class Cube {
         this.faces[0] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(255, 0, 0, 0.75)'
+            colour: 'rgba(255, 0, 0, 1)'
         }; 
 
         //Back Face
@@ -51,7 +51,7 @@ class Cube {
         this.faces[1] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(0, 0, 255, 0.75)'
+            colour: 'rgba(0, 0, 255, 1)'
         }; 
 
         //Left Face
@@ -64,7 +64,7 @@ class Cube {
         this.faces[2] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(0, 255, 0, 0.75)'
+            colour: 'rgba(0, 255, 0, 1)'
         }; 
 
         //Right Face
@@ -77,7 +77,7 @@ class Cube {
         this.faces[3] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(255, 255, 0, 0.75)'
+            colour: 'rgba(255, 255, 0, 1)'
         }; 
 
         //Top Face
@@ -90,7 +90,7 @@ class Cube {
         this.faces[4] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(255, 0, 255, 0.75)'
+            colour: 'rgba(255, 0, 255, 1)'
         }; 
 
         //Bottom Face
@@ -103,7 +103,7 @@ class Cube {
         this.faces[5] = {
             vertices: myVertices,
             centerPoint: this.findAverageVertex(myVertices),
-            colour: 'rgba(0, 255, 255, 0.75)'
+            colour: 'rgba(0, 255, 255, 1)'
         }; 
     }
 

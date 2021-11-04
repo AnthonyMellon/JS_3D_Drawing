@@ -5,6 +5,10 @@ var ctx;
 const myCube = new Cube(100, [0, 0, 0]);
 const myOtherCube = new Cube(100, [0, 0, 0]);
 
+const cubesWidth = 10;
+const cubesHeight = 16;
+var cubes = Array(cubesWidth*cubesHeight);
+
 function setupCanvas() { //Set the canvas up
 
     const canvas = document.querySelector('.myCanvas');
@@ -125,8 +129,20 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     
 
     //Draw the cube
-    drawCube(myCube, 'solidOutlined', 1);
-    drawCube(myOtherCube, 'solidOutlined', 1);
+    //drawCube(myCube, 'solidOutlined', 1);
+    //drawCube(myOtherCube, 'solidOutlined', 1);
+
+    for(let i = 0; i < cubes.length; i++) {
+        cubes[i].setupVertices();
+
+        cubes[i].Rotate(0, 1);
+        cubes[i].Rotate(1, 0.1);
+        cubes[i].Rotate(2, 1);
+
+        cubes[i].setupFaces();
+
+        drawCube(cubes[i], 'solidOutlined', 1);
+    }
 
     requestAnimationFrame(mainAnimationLoop);    
 }
@@ -134,7 +150,18 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
 function main() { //Main function for intial setup, only runs once
  
     ctx = setupCanvas();
-    clearScreen('black');     
+    clearScreen('black'); 
+    
+    let index = 0;
+    for(let i = 0; i < cubesWidth; i++)
+    {
+        for(let j = 0; j < cubesHeight; j++) {
+            cubes[index] = new Cube(100, [(i+1)*100, (j+1)*100, 0]);
+            index++;
+        }
+        
+    }
+
     mainAnimationLoop(); 
 }
 main();
