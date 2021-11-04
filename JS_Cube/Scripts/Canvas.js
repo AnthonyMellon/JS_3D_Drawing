@@ -109,14 +109,24 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     //Set the cube vertices then rotate them
     myCube.setupVertices();
     myCube.Rotate(0, 1);
-    myCube.Rotate(1, 0);
     myCube.Rotate(1, 1);
+    myCube.Rotate(2, 0);
 
     //Set the faces
     myCube.setupFaces();
 
+    //MyOtherCube
+    myOtherCube.setPosition([(width/2)+250, (height/2)+250, myCube.getPosition()[2]]);
+    myOtherCube.setupVertices();
+    myOtherCube.Rotate(0, 1);
+    myOtherCube.Rotate(1, 1);
+    myOtherCube.Rotate(2, 0);
+    myOtherCube.setupFaces();
+    
+
     //Draw the cube
     drawCube(myCube, 'solidOutlined', 1);
+    drawCube(myOtherCube, 'solidOutlined', 1);
 
     requestAnimationFrame(mainAnimationLoop);    
 }
