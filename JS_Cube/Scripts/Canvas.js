@@ -2,7 +2,8 @@ var width;
 var height;
 var ctx;
 
-const myCube = new newCube(100, [250, 250, 250]);
+const myCube = new Cube(100, [0, 0, 0]);
+const myOtherCube = new Cube(100, [0, 0, 0]);
 
 function setupCanvas() { //Set the canvas up
 
