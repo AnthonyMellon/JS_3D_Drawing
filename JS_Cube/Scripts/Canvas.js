@@ -1,13 +1,10 @@
+//This is the lowest level of the application
+
 var width;
 var height;
 var ctx;
 
-const myCube = new Cube(100, [0, 0, 0]);
-const myOtherCube = new Cube(100, [0, 0, 0]);
-
-const cubesWidth = 10;
-const cubesHeight = 16;
-var cubes = Array(cubesWidth*cubesHeight);
+var WORLD_MANAGER;
 
 function setupCanvas() { //Set the canvas up
 
@@ -47,60 +44,6 @@ function clearScreen(fillStyle) { //Reset the screen to plain black
     ctx.fillRect(0, 0, width, height);
 }
 
-function drawCube(cube, drawMode, lineWidth) {
-    ctx.lineWidth = lineWidth;
-
-    //Get the faces that need drawn
-    let facesToDraw = cube.getFaces();
-
-    //Bubble sort the faces on their Z position
-    for(let i = 0; i < facesToDraw.length - 1; i++) {
-        for(let j = 0; j < facesToDraw.length - i - 1; j++) {
-            if(facesToDraw[j].centerPoint[2] > facesToDraw[j + 1].centerPoint[2]) {
-                let temp = facesToDraw[j];
-                facesToDraw[j] = facesToDraw[j + 1];
-                facesToDraw[j + 1] = temp;
-            }
-        }
-    }
-
-    //Draw each face
-    for(let i = 0; i < facesToDraw.length; i++) {
-        ctx.beginPath();
-
-        let startX = facesToDraw[i].vertices[0][0];
-        let startY = facesToDraw[i].vertices[0][1];
-
-        ctx.moveTo(startX, startY);
-
-        //Trace to each vertix in the current face
-        for(let j = 1; j < facesToDraw[i].vertices.length; j++) {
-            let X = facesToDraw[i].vertices[j][0];
-            let Y = facesToDraw[i].vertices[j][1];
-            ctx.lineTo(X, Y); 
-        }
-
-        ctx.lineTo(startX, startY);
-
-        //Draw according to drawMode
-        if(drawMode === 'solid') {
-            ctx.fillStyle = facesToDraw[i].colour;
-            ctx.fill();
-        }
-        else if(drawMode === 'solidOutlined') {
-            ctx.fillStyle = facesToDraw[i].colour;
-            ctx.fill();
-            ctx.strokeStyle = 'white';
-            ctx.stroke();
-
-        }
-        else { //Default to a wireframe view
-            ctx.strokeStyle = facesToDraw[i].colour;
-            ctx.stroke();
-        }
-    }
-}
-
 function mainAnimationLoop() { //Main animation loop, runs once each frame
     
     //Canvas Setup
@@ -108,42 +51,10 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
     clearScreen('black');
 
     //Recenter the cube
-    myCube.setPosition([width/2, height/2, myCube.getPosition()[2]]);
+    //myCube.setPosition([width/2, height/2, myCube.getPosition()[2]]);
 
-    //Set the cube vertices then rotate them
-    myCube.setupVertices();
-    myCube.Rotate(0, 1);
-    myCube.Rotate(1, 1);
-    myCube.Rotate(2, 0);
-
-    //Set the faces
-    myCube.setupFaces();
-
-    //MyOtherCube
-    myOtherCube.setPosition([(width/2)+250, (height/2)+250, myCube.getPosition()[2]]);
-    myOtherCube.setupVertices();
-    myOtherCube.Rotate(0, 1);
-    myOtherCube.Rotate(1, 1);
-    myOtherCube.Rotate(2, 0);
-    myOtherCube.setupFaces();
-    
-
-    //Draw the cube
-    //drawCube(myCube, 'solidOutlined', 1);
-    //drawCube(myOtherCube, 'solidOutlined', 1);
-
-    for(let i = 0; i < cubes.length; i++) {
-        cubes[i].setupVertices();
-
-        cubes[i].Rotate(0, 1);
-        cubes[i].Rotate(1, 0.1);
-        cubes[i].Rotate(2, 1);
-
-        cubes[i].setupFaces();
-
-        drawCube(cubes[i], 'solidOutlined', 1);
-    }
-
+    WORLD_MANAGER.generateCubesList();
+    WORLD_MANAGER.drawCubes('solidOutlined', 1);
     requestAnimationFrame(mainAnimationLoop);    
 }
 
@@ -151,16 +62,8 @@ function main() { //Main function for intial setup, only runs once
  
     ctx = setupCanvas();
     clearScreen('black'); 
-    
-    let index = 0;
-    for(let i = 0; i < cubesWidth; i++)
-    {
-        for(let j = 0; j < cubesHeight; j++) {
-            cubes[index] = new Cube(100, [(i+1)*100, (j+1)*100, 0]);
-            index++;
-        }
-        
-    }
+
+    WORLD_MANAGER = new worldManager(ctx, width, height);
 
     mainAnimationLoop(); 
 }
