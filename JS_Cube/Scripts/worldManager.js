@@ -27,13 +27,17 @@ class WorldManager {
                                                       (height/2),   //Y
                                                        0                  //Z
                                                      ]);
-            this.cubes[i].setupVertices();
+            this.cubes[i].resetVertices();
             this.cubes[i].setupFaces();
         }
     };  
     
     updateCubesList() {
 
+    };
+
+    rotateCubes() {
+        
     };
 
     drawCubes(drawMode, lineWidth) {

@@ -14,7 +14,7 @@ class Cube {
         this.position = position;
     }
 
-    setupVertices() {
+    resetVertices() {
         this.vertices[0] = [this.position[0] - this.size/2, this.position[1] - this.size/2, this.position[2] + this.size/2];
         this.vertices[1] = [this.position[0] + this.size/2, this.position[1] - this.size/2, this.position[2] + this.size/2];
         this.vertices[2] = [this.position[0] + this.size/2, this.position[1] + this.size/2, this.position[2] + this.size/2];
@@ -128,6 +128,8 @@ class Cube {
 
     Rotate(axis, degreeIncrement) {
 
+        this.resetVertices();
+
         //Incriment the angle and restrict it to the range of 0 - 360
         this.rotation[axis] += degreeIncrement;
         this.rotation[axis] = this.rotation[axis] % 360;
@@ -156,6 +158,8 @@ class Cube {
             tempVertex.splice(axis, 0, this.vertices[i][axis]);
             this.vertices[i] = [...tempVertex];
         }
+
+        this.setupFaces();
     }
 
     setupCube() {

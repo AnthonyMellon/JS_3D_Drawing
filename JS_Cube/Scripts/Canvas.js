@@ -52,9 +52,9 @@ function mainAnimationLoop() { //Main animation loop, runs once each frame
 
     //Recenter the cube
     //myCube.setPosition([width/2, height/2, myCube.getPosition()[2]]);
-
-    WORLD_MANAGER.generateCubesList();
-    WORLD_MANAGER.drawCubes('solidOutlined', 1);
+    
+    WORLD_MANAGER.rotateCubes();
+    WORLD_MANAGER.drawCubes('solidOutlined', 1);    
     requestAnimationFrame(mainAnimationLoop);    
 }
 
@@ -63,7 +63,8 @@ function main() { //Main function for intial setup, only runs once
     ctx = setupCanvas();
     clearScreen('black'); 
 
-    WORLD_MANAGER = new worldManager(ctx, width, height);
+    WORLD_MANAGER = new WorldManager(ctx, width, height);
+    WORLD_MANAGER.generateCubesList();
 
     mainAnimationLoop(); 
 }
