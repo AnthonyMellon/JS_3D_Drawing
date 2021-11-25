@@ -9,11 +9,15 @@ class WorldManager {
     height;
     cubes;
 
+    rotX = 0;
+    rotY = 0;
+    rotZ = 0;
+
     constructor(ctx, width, height) {
         this.ctx = ctx;
         this.width = width;
         this.height = height;
-    };
+    }; 
 
     generateCubesList() {
 
@@ -37,8 +41,14 @@ class WorldManager {
     };
 
     rotateCubes() {
-        
-    };
+        this.cubes.forEach(cube => {
+            cube.resetVertices();
+            cube.Rotate(0, this.rotX);
+            cube.Rotate(1, this.rotY);
+            cube.Rotate(2, this.rotZ);
+            cube.setupFaces();
+        });
+    }
 
     drawCubes(drawMode, lineWidth) {
 
@@ -97,4 +107,36 @@ class WorldManager {
             };
         });
     };
+
+    move() {
+
+        let speed = 2
+
+        switch (currentKey) {
+            case 'w':
+                this.rotX = speed;
+                break;
+            case 's':
+                this.rotX = -speed;
+                break;
+            case 'a':
+                this.rotY = speed;
+                break;
+            case 'd':
+                this.rotY = -speed;
+                break;   
+            case 'ArrowUp':
+                this.rotZ = speed;
+                break;
+            case 'ArrowDown':
+                this.rotZ = -speed;
+                break;
+            default:
+                this.rotX = 0;
+                this.rotY = 0;
+                this.rotZ = 0;
+
+        }
+        
+    }
 }

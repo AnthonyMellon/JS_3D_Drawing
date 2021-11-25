@@ -128,8 +128,6 @@ class Cube {
 
     Rotate(axis, degreeIncrement) {
 
-        this.resetVertices();
-
         //Incriment the angle and restrict it to the range of 0 - 360
         this.rotation[axis] += degreeIncrement;
         this.rotation[axis] = this.rotation[axis] % 360;
@@ -158,8 +156,6 @@ class Cube {
             tempVertex.splice(axis, 0, this.vertices[i][axis]);
             this.vertices[i] = [...tempVertex];
         }
-
-        this.setupFaces();
     }
 
     setupCube() {
