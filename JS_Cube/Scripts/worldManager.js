@@ -1,6 +1,6 @@
 //Manages the drawing of the world
 
-class worldManager {
+class WorldManager {
 
     CUBE_SIZE = 100;
 
@@ -17,13 +17,14 @@ class worldManager {
 
     generateCubesList() {
 
-        let numCubes = Math.ceil(this.width/this.CUBE_SIZE);        
+        let numCubes = Math.ceil(this.width/this.CUBE_SIZE); 
+        numCubes = 1;       
 
         this.cubes = Array(numCubes);
         for(let i = 0; i < numCubes; i++)
         {
-            this.cubes[i] = new Cube(this.CUBE_SIZE, [(this.CUBE_SIZE/2 + this.CUBE_SIZE*i), //X
-                                                      (this.height - this.CUBE_SIZE/2),   //Y
+            this.cubes[i] = new Cube(this.CUBE_SIZE, [(width/2*(i+1)), //X
+                                                      (height/2),   //Y
                                                        0                  //Z
                                                      ]);
             this.cubes[i].setupVertices();
